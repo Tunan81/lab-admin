@@ -8,7 +8,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import top.continew.admin.generator.model.query.TableQuery;
 import top.continew.admin.lab.model.query.LabQuery;
 import top.continew.admin.lab.model.req.LabReq;
 import top.continew.admin.lab.model.resp.LabDetailResp;
