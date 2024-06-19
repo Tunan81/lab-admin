@@ -10,6 +10,7 @@ import lombok.Data;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import top.continew.admin.common.config.CustomLocalDateTimeDeserializer;
 import top.continew.starter.data.core.annotation.Query;
 import top.continew.starter.data.core.enums.QueryType;
@@ -34,6 +35,8 @@ public class RecordQuery implements Serializable {
     @Query(type = QueryType.EQ)
     private Long labId;
 
+    private String labName;
+
     /**
      * 用户id
      */
@@ -41,13 +44,14 @@ public class RecordQuery implements Serializable {
     @Query(type = QueryType.EQ)
     private Long userId;
 
+    private String userName;
+
     /**
      * 检查日期
      */
     @Schema(description = "检查日期")
     @Query(type = QueryType.LIKE_LEFT)
-    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
-    private LocalDateTime inspectionDate;
+    private String inspectionDate;
 
     /**
      * 消防设备是否存在

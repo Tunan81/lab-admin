@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import top.continew.admin.system.model.entity.LogDO;
+import top.continew.admin.system.model.entity.UserDO;
 import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.resp.PageResp;
 import top.continew.starter.extension.crud.service.impl.BaseServiceImpl;
@@ -18,6 +19,8 @@ import top.continew.admin.lab.model.req.LabReq;
 import top.continew.admin.lab.model.resp.LabDetailResp;
 import top.continew.admin.lab.model.resp.LabResp;
 import top.continew.admin.lab.service.LabService;
+
+import java.util.List;
 
 /**
  * 实验室业务实现
@@ -39,5 +42,12 @@ public class LabServiceImpl extends BaseServiceImpl<LabMapper, LabDO, LabResp, L
         IPage<LabResp> page = labMapper.myPage(pageQuery.toPage(),
                 queryWrapper,query.getDeptName(),query.getName(),query.getUserName(),query.getBuildingName());
         return PageResp.build(page);
+    }
+
+    @Override
+    public List<LabDO> selectLabByName(String labName) {
+        QueryWrapper<LabDO> query = new QueryWrapper<>();
+        query.like("name",labName);
+        return baseMapper.selectList(query);
     }
 }

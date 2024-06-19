@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.continew.admin.lab.mapper.RecordMapper">
+
+    <select id="myPage" resultType="top.continew.admin.lab.model.resp.RecordResp">
+        select t1.id,
+               t1.lab_id,
+               t1.user_id,
+               t1.inspection_date,
+               t1.door,
+               t1.door_memo,
+               t1.fire_device_exist,
+               t1.fire_device_exist_memo,
+               t1.fire_device_valid,
+               t1.fire_device_valid_memo,
+               t1.other_risks,
+               t1.problem_handling,
+               t1.create_time,
+               t1.update_time,
+               t1.create_user,
+               t1.update_user,
+               t2.username AS userName,
+               t3.name AS labName
+        FROM record AS t1
+        LEFT JOIN sys_user AS t2 ON t2.id = t1.user_id
+        LEFT JOIN lab AS t3 ON t3.id = t1.lab_id
+        <where>
+               <if test="userName != null and userName != ''">
+                      AND t2.username LIKE CONCAT('%', #{userName}, '%')
+               </if>
+               <if test="labName != null and labName != ''">
+                      AND t3.name LIKE CONCAT('%', #{labName}, '%')
+               </if>
+               <if test="inspectionDate != null and inspectionDate != ''">
+                      AND t1.inspection_date LIKE CONCAT('%', #{inspectionDate}, '%')
+               </if>
+        </where>
+
+    </select>
+
+</mapper>

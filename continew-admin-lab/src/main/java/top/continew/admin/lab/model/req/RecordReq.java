@@ -48,9 +48,9 @@ public class RecordReq extends BaseReq {
      */
     @Schema(description = "检查日期")
     //@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd HH:mm:ss")
-    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private LocalDateTime inspectionDate;
+    //@JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
+    //@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
+    private String inspectionDate;
 
     /**
      * 消防设备是否存在

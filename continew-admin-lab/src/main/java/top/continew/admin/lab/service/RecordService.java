@@ -1,5 +1,7 @@
 package top.continew.admin.lab.service;
 
+import top.continew.starter.extension.crud.model.query.PageQuery;
+import top.continew.starter.extension.crud.model.resp.PageResp;
 import top.continew.starter.extension.crud.service.BaseService;
 import top.continew.admin.lab.model.query.RecordQuery;
 import top.continew.admin.lab.model.req.RecordReq;
@@ -12,4 +14,6 @@ import top.continew.admin.lab.model.resp.RecordResp;
  * @author xiahaike
  * @since 2024/06/17 08:25
  */
-public interface RecordService extends BaseService<RecordResp, RecordDetailResp, RecordQuery, RecordReq> {}
+public interface RecordService extends BaseService<RecordResp, RecordDetailResp, RecordQuery, RecordReq> {
+    PageResp<RecordResp> myPage(RecordQuery recordQuery, PageQuery pageQuery);
+}

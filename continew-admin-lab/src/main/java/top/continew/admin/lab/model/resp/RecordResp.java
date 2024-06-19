@@ -52,9 +52,9 @@ public class RecordResp extends BaseResp {
      * 检查日期
      */
     @Schema(description = "检查日期")
-    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private LocalDateTime inspectionDate;
+    //@JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
+    //@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
+    private String inspectionDate;
 
     /**
      * 门窗完好及关闭

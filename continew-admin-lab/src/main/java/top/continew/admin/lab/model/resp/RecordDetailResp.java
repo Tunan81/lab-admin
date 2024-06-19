@@ -45,12 +45,16 @@ public class RecordDetailResp extends BaseDetailResp {
     @ExcelIgnore
     private Long labId;
 
+    private String labName;
+
     /**
      * 用户id
      */
     @Schema(description = "用户id")
     @ExcelIgnore
     private Long userId;
+
+    private String userName;
 
     /**
      * 门窗完好及关闭
@@ -112,10 +116,10 @@ public class RecordDetailResp extends BaseDetailResp {
      * 检查日期
      */
     @Schema(description = "检查日期")
-    @ExcelProperty(value = "检查日期",index = 9,converter = LocalDateTimeConverter.class)
-    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
-    @JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
-    private LocalDateTime inspectionDate;
+    //@ExcelProperty(value = "检查日期",index = 9,converter = LocalDateTimeConverter.class)
+    //@JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
+    //@JsonFormat(locale="zh", timezone="GMT+8", pattern="yyyy-MM-dd")
+    private String inspectionDate;
 
     @Schema(
             description = "ID",

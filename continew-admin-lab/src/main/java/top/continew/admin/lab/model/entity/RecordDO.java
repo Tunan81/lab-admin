@@ -38,8 +38,8 @@ public class RecordDO extends BaseDO {
     /**
      * 检查日期
      */
-    @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
-    private LocalDateTime inspectionDate;
+    // @JsonDeserialize(using = CustomLocalDateTimeDeserializer.class)
+    private String inspectionDate;
 
     /**
      * 门窗完好及关闭

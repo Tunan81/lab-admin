@@ -51,6 +51,7 @@ public class LabController extends BaseController<LabService, LabResp, LabDetail
     @Operation(summary = "分页查询列表", description = "分页查询列表")
     @ResponseBody
     @GetMapping
+    @Override
     public R<PageResp<LabResp>> page(LabQuery labQuery, @Validated PageQuery pageQuery) {
         this.checkPermission(Api.LIST);
         PageResp<LabResp> labRespPageResp = labService.myPage(labQuery,pageQuery);
@@ -73,6 +74,7 @@ public class LabController extends BaseController<LabService, LabResp, LabDetail
     )
     @ResponseBody
     @GetMapping("/{id}")
+    @Override
     public R<LabDetailResp> get(@PathVariable Long id) {
         this.checkPermission(Api.LIST);
         LabDetailResp labResp = labService.get(id);
