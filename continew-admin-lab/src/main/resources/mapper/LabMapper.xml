@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="top.continew.admin.lab.mapper.LabMapper">
+
+    <select id="myPage" resultType="top.continew.admin.lab.model.resp.LabResp">
+        SELECT t1.id,
+               t1.user_id,
+               t1.building_name,
+               t1.dept_id,
+               t1.name,
+               t1.create_time,
+               t1.update_time,
+               t1.create_user,
+               t1.update_user,
+               t2.username AS userName,
+               t3.name     AS deptName
+        FROM lab AS t1
+        LEFT JOIN sys_user AS t2 ON t2.id = t1.user_id
+        LEFT JOIN sys_dept AS t3 ON t3.id = t1.dept_id
+        <where>
+            <if test="name != null and name != ''">
+                AND t1.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="buildingName != null and buildingName != ''">
+                AND t1.building_name LIKE CONCAT('%', #{buildingName}, '%')
+            </if>
+            <if test="userName != null and userName != ''">
+                AND t2.username LIKE CONCAT('%', #{userName}, '%')
+            </if>
+
+            <if test="deptName != null and deptName != ''">
+                AND t3.name LIKE CONCAT('%', #{deptName}, '%')
+            </if>
+        </where>
+    </select>
+
+</mapper>

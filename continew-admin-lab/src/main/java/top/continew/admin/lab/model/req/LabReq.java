@@ -39,4 +39,18 @@ public class LabReq extends BaseReq {
      */
     @Schema(description = "用户id")
     private Long userId;
+
+
+    /**
+     * 所在楼栋名称
+     */
+    @Schema(description = "所在楼栋名称")
+    private String buildingName;
+
+    /**
+     * 所属部门id
+     */
+    @Schema(description = "所属部门id")
+    private Long deptId;
+
 }

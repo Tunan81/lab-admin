@@ -18,5 +18,10 @@
             <groupId>top.continew</groupId>
             <artifactId>continew-admin-common</artifactId>
         </dependency>
+
+        <dependency>
+            <groupId>top.continew</groupId>
+            <artifactId>continew-admin-system</artifactId>
+        </dependency>
     </dependencies>
 </project>

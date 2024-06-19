@@ -37,4 +37,21 @@ public class LabQuery implements Serializable {
     @Schema(description = "用户id")
     @Query(type = QueryType.EQ)
     private Long userId;
+
+    /**
+     * 维护人员姓名
+     */
+    private String userName;
+
+    /**
+     * 所在楼栋名称
+     */
+    @Schema(description = "所在楼栋名称")
+    private String buildingName;
+
+    /**
+     * 所属部门名称
+     */
+    @Schema(description = "所属部门名称")
+    private String deptName;
 }

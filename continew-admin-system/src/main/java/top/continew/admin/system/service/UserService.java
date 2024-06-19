@@ -138,4 +138,6 @@ public interface UserService extends BaseService<UserResp, UserDetailResp, UserQ
      * @return 用户数量
      */
     Long countByDeptIds(List<Long> deptIds);
+
+    List<UserDO> selectUsersByName(String userName);
 }

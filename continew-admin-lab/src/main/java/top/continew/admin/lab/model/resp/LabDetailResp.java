@@ -38,4 +38,22 @@ public class LabDetailResp extends BaseDetailResp {
     @Schema(description = "用户id")
     @ExcelProperty(value = "用户id")
     private Long userId;
+
+
+    /**
+     * 所在楼栋名称
+     */
+    @Schema(description = "所在楼栋名称")
+    private String buildingName;
+
+    private String deptName;
+
+    private String userName;
+
+    /**
+     * 所属部门id
+     */
+    @Schema(description = "所属部门id")
+    private Long deptId;
+
 }

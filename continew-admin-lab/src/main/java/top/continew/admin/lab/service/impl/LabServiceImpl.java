@@ -1,9 +1,15 @@
 package top.continew.admin.lab.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import jakarta.annotation.Resource;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
+import top.continew.admin.system.model.entity.LogDO;
+import top.continew.starter.extension.crud.model.query.PageQuery;
+import top.continew.starter.extension.crud.model.resp.PageResp;
 import top.continew.starter.extension.crud.service.impl.BaseServiceImpl;
 import top.continew.admin.lab.mapper.LabMapper;
 import top.continew.admin.lab.model.entity.LabDO;
@@ -21,4 +27,17 @@ import top.continew.admin.lab.service.LabService;
  */
 @Service
 @RequiredArgsConstructor
-public class LabServiceImpl extends BaseServiceImpl<LabMapper, LabDO, LabResp, LabDetailResp, LabQuery, LabReq> implements LabService {}
+public class LabServiceImpl extends BaseServiceImpl<LabMapper, LabDO, LabResp, LabDetailResp, LabQuery, LabReq> implements LabService {
+
+
+    @Resource
+    private LabMapper labMapper;
+
+    @Override
+    public PageResp<LabResp> myPage(LabQuery query, PageQuery pageQuery) {
+        QueryWrapper<LabDO> queryWrapper = this.buildQueryWrapper(query);
+        IPage<LabResp> page = labMapper.myPage(pageQuery.toPage(),
+                queryWrapper,query.getDeptName(),query.getName(),query.getUserName(),query.getBuildingName());
+        return PageResp.build(page);
+    }
+}

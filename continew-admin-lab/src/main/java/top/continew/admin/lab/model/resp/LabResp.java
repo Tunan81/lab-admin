@@ -51,4 +51,20 @@ public class LabResp extends BaseResp {
      */
     @Schema(description = "修改时间")
     private LocalDateTime updateTime;
+
+    /**
+     * 所在楼栋名称
+     */
+    @Schema(description = "所在楼栋名称")
+    private String buildingName;
+
+    /**
+     * 所属部门id
+     */
+    @Schema(description = "所属部门id")
+    private Long deptId;
+
+    @Schema(description = "所属部门名称")
+    private String deptName;
+
 }

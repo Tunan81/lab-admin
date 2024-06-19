@@ -28,6 +28,7 @@ import com.alicp.jetcache.anno.CacheInvalidate;
 import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.CacheUpdate;
 import com.alicp.jetcache.anno.Cached;
+import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import jakarta.annotation.Resource;
@@ -253,6 +254,13 @@ public class UserServiceImpl extends BaseServiceImpl<UserMapper, UserDO, UserRes
     @Override
     public Long countByDeptIds(List<Long> deptIds) {
         return baseMapper.lambdaQuery().in(UserDO::getDeptId, deptIds).count();
+    }
+
+    @Override
+    public List<UserDO> selectUsersByName(String userName) {
+        QueryWrapper<UserDO> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("username", userName);
+        return baseMapper.selectList(queryWrapper);
     }
 
     @Override
