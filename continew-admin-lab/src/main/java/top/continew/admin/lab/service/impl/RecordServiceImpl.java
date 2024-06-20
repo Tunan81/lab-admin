@@ -35,7 +35,7 @@ public class RecordServiceImpl extends BaseServiceImpl<RecordMapper, RecordDO, R
     @Override
     public PageResp<RecordResp> myPage(RecordQuery recordQuery, PageQuery pageQuery) {
         QueryWrapper<RecordDO> queryWrapper = this.buildQueryWrapper(recordQuery);
-        IPage<RecordResp> page = recordMapper.myPage(pageQuery.toPage(), queryWrapper,
+        IPage<RecordResp> page = recordMapper.myPage(pageQuery.toPage(), queryWrapper,recordQuery.getUserId(),
                 recordQuery.getUserName(),recordQuery.getLabName(),recordQuery.getInspectionDate());
         return PageResp.build(page);
     }

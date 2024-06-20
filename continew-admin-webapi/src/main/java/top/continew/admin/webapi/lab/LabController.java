@@ -1,5 +1,6 @@
 package top.continew.admin.webapi.lab;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
@@ -9,6 +10,9 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import top.continew.admin.common.model.dto.LoginUser;
+import top.continew.admin.common.util.helper.LoginHelper;
+import top.continew.admin.lab.model.entity.LabDO;
 import top.continew.admin.lab.model.query.LabQuery;
 import top.continew.admin.lab.model.req.LabReq;
 import top.continew.admin.lab.model.resp.LabDetailResp;
@@ -54,14 +58,14 @@ public class LabController extends BaseController<LabService, LabResp, LabDetail
     @Override
     public R<PageResp<LabResp>> page(LabQuery labQuery, @Validated PageQuery pageQuery) {
         this.checkPermission(Api.LIST);
-        PageResp<LabResp> labRespPageResp = labService.myPage(labQuery,pageQuery);
+        PageResp<LabResp> labRespPageResp = labService.myPage(labQuery, pageQuery);
         labRespPageResp.getList().forEach(labResp -> {
             labResp.setUserName(userService.getById(labResp.getUserId()).getUsername());
             // 查询部门名称 只查上一级名称（学院）
             DeptDO deptDO = deptService.getById(labResp.getDeptId());
             String parentName = null;
             if (deptDO.getParentId() != null) {
-               parentName  = deptService.getById(deptDO.getParentId()).getName();
+                parentName = deptService.getById(deptDO.getParentId()).getName();
             }
             labResp.setDeptName(deptDO.getName() + "(" + parentName + ")");
         });
@@ -86,6 +90,29 @@ public class LabController extends BaseController<LabService, LabResp, LabDetail
     @ResponseBody
     @GetMapping("/user/{userName}")
     public R<List<UserDO>> selectUsersByName(@PathVariable String userName) {
-        return  R.ok(userService.selectUsersByName(userName));
+        return R.ok(userService.selectUsersByName(userName));
+    }
+
+    /**
+     * 根据用户id查询所管理的实验室
+     */
+    @Operation(summary = "根据当前登录用户查询所管理的实验室", description = "根据当前登录用户查询所管理的实验室")
+    @ResponseBody
+    @GetMapping("/loginUser")
+    public R<List<LabDO>> selectLabByLoginUser() {
+        LoginUser loginUser = LoginHelper.getLoginUser();
+        return R.ok(labService.selectLabByUserId(loginUser.getId()));
+//        PageResp<LabResp> labRespPageResp = labService.myPage(labQuery, pageQuery);
+//        labRespPageResp.getList().forEach(labResp -> {
+//            labResp.setUserName(userService.getById(labResp.getUserId()).getUsername());
+//            // 查询部门名称 只查上一级名称（学院）
+//            DeptDO deptDO = deptService.getById(labResp.getDeptId());
+//            String parentName = null;
+//            if (deptDO.getParentId() != null) {
+//                parentName = deptService.getById(deptDO.getParentId()).getName();
+//            }
+//            labResp.setDeptName(deptDO.getName() + "(" + parentName + ")");
+//        });
+        //return R.ok(labRespPageResp);
     }
 }

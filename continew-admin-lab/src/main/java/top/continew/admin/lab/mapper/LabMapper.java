@@ -26,6 +26,7 @@ public interface LabMapper extends BaseMapper<LabDO> {
     IPage<LabResp> myPage(@Param("page") IPage<LabDO> page,
                           @Param(Constants.WRAPPER) QueryWrapper<LabDO> queryWrapper,
                           @Param("deptName") String deptName,
+                          @Param("userId") Long userId,
                           @Param("name") String name,
                           @Param("userName")String userName,
                           @Param("buildingName")String buildingName);

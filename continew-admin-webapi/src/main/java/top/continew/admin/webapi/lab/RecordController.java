@@ -3,6 +3,8 @@ package top.continew.admin.webapi.lab;
 import io.swagger.v3.oas.annotations.Operation;
 import jakarta.annotation.Resource;
 import org.springframework.validation.annotation.Validated;
+import top.continew.admin.common.model.dto.LoginUser;
+import top.continew.admin.common.util.helper.LoginHelper;
 import top.continew.admin.lab.model.entity.LabDO;
 import top.continew.admin.lab.model.query.LabQuery;
 import top.continew.admin.lab.model.resp.LabResp;
@@ -54,8 +56,13 @@ public class RecordController extends BaseController<RecordService, RecordResp, 
     @Override
     public R<PageResp<RecordResp>> page(RecordQuery recordQuery, PageQuery pageQuery) {
         this.checkPermission(Api.LIST);
-        System.out.println("11"+recordQuery.getInspectionDate());
+        LoginUser loginUser = LoginHelper.getLoginUser();
+        if (!loginUser.isAdmin()) {
+            recordQuery.setUserId(loginUser.getId());
+            System.out.println("111111"+ loginUser.getId());
+        }
         PageResp<RecordResp> recordRespPageResp = recordService.myPage(recordQuery,pageQuery);
+        System.out.println("page" + recordRespPageResp.getList());
         recordRespPageResp.getList().forEach(recordResp -> {
             recordResp.setUserName(userService.getById(recordResp.getUserId()).getUsername());
             recordResp.setLabName(labService.get(recordResp.getLabId()).getName());
@@ -82,5 +89,19 @@ public class RecordController extends BaseController<RecordService, RecordResp, 
     @GetMapping("/lab/{labName}")
     public R<List<LabDO>> selectUsersByName(@PathVariable String labName) {
         return  R.ok(labService.selectLabByName(labName));
+    }
+
+    @Operation(summary = "分页查询列表", description = "分页查询列表")
+    @ResponseBody
+    @GetMapping("/loginUser")
+    public R<PageResp<RecordResp>> pageByLoginUser(RecordQuery recordQuery, PageQuery pageQuery) {
+        LoginUser loginUser = LoginHelper.getLoginUser();
+        recordQuery.setUserId(loginUser.getId());
+        PageResp<RecordResp> recordRespPageResp = recordService.myPage(recordQuery,pageQuery);
+        recordRespPageResp.getList().forEach(recordResp -> {
+            recordResp.setUserName(userService.getById(recordResp.getUserId()).getUsername());
+            recordResp.setLabName(labService.get(recordResp.getLabId()).getName());
+        });
+        return R.ok(recordRespPageResp);
     }
 }

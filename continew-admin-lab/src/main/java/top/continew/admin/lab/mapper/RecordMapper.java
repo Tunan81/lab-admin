@@ -17,6 +17,7 @@ import top.continew.admin.lab.model.entity.RecordDO;
 public interface RecordMapper extends BaseMapper<RecordDO> {
     IPage<RecordResp> myPage(@Param("page")IPage<RecordDO> page,
                              @Param(Constants.WRAPPER)QueryWrapper<RecordDO> queryWrapper,
+                             @Param("userId") Long userId,
                              @Param("userName")String userName,
                              @Param("labName")String labName,
                              @Param("inspectionDate")String inspectionDate);

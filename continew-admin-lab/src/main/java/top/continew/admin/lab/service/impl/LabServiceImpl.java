@@ -40,7 +40,7 @@ public class LabServiceImpl extends BaseServiceImpl<LabMapper, LabDO, LabResp, L
     public PageResp<LabResp> myPage(LabQuery query, PageQuery pageQuery) {
         QueryWrapper<LabDO> queryWrapper = this.buildQueryWrapper(query);
         IPage<LabResp> page = labMapper.myPage(pageQuery.toPage(),
-                queryWrapper,query.getDeptName(),query.getName(),query.getUserName(),query.getBuildingName());
+                queryWrapper,query.getDeptName(),query.getUserId(),query.getName(),query.getUserName(),query.getBuildingName());
         return PageResp.build(page);
     }
 
@@ -48,6 +48,13 @@ public class LabServiceImpl extends BaseServiceImpl<LabMapper, LabDO, LabResp, L
     public List<LabDO> selectLabByName(String labName) {
         QueryWrapper<LabDO> query = new QueryWrapper<>();
         query.like("name",labName);
+        return baseMapper.selectList(query);
+    }
+
+    @Override
+    public List<LabDO> selectLabByUserId(Long id) {
+        QueryWrapper<LabDO> query = new QueryWrapper<>();
+        query.eq("user_id",id);
         return baseMapper.selectList(query);
     }
 }

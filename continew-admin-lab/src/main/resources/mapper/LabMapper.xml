@@ -4,22 +4,25 @@
 
     <select id="myPage" resultType="top.continew.admin.lab.model.resp.LabResp">
         SELECT t1.id,
-               t1.user_id,
-               t1.building_name,
-               t1.dept_id,
-               t1.name,
-               t1.create_time,
-               t1.update_time,
-               t1.create_user,
-               t1.update_user,
-               t2.username AS userName,
-               t3.name     AS deptName
+        t1.user_id,
+        t1.building_name,
+        t1.dept_id,
+        t1.name,
+        t1.create_time,
+        t1.update_time,
+        t1.create_user,
+        t1.update_user,
+        t2.username AS userName,
+        t3.name AS deptName
         FROM lab AS t1
         LEFT JOIN sys_user AS t2 ON t2.id = t1.user_id
         LEFT JOIN sys_dept AS t3 ON t3.id = t1.dept_id
         <where>
             <if test="name != null and name != ''">
                 AND t1.name LIKE CONCAT('%', #{name}, '%')
+            </if>
+            <if test="userId != null and userId != ''">
+                and t1.user_id = #{userId}
             </if>
             <if test="buildingName != null and buildingName != ''">
                 AND t1.building_name LIKE CONCAT('%', #{buildingName}, '%')
