@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import top.continew.admin.common.model.dto.LoginUser;
+import top.continew.admin.common.model.dto.RoleDTO;
 import top.continew.admin.common.util.helper.LoginHelper;
 import top.continew.admin.lab.model.entity.LabDO;
 import top.continew.admin.lab.model.query.LabQuery;
@@ -29,7 +30,10 @@ import top.continew.starter.extension.crud.model.query.PageQuery;
 import top.continew.starter.extension.crud.model.resp.PageResp;
 import top.continew.starter.web.model.R;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * 实验室管理 API
@@ -63,11 +67,15 @@ public class LabController extends BaseController<LabService, LabResp, LabDetail
             labResp.setUserName(userService.getById(labResp.getUserId()).getUsername());
             // 查询部门名称 只查上一级名称（学院）
             DeptDO deptDO = deptService.getById(labResp.getDeptId());
-            String parentName = null;
-            if (deptDO.getParentId() != null) {
+            String parentName = "";
+            System.out.println("deptDO.getParentId() = " + deptDO.getParentId());
+            System.out.println("deptDO.getParentId() = " + deptDO.getId());
+            if (deptDO.getParentId() != 0) {
                 parentName = deptService.getById(deptDO.getParentId()).getName();
             }
-            labResp.setDeptName(deptDO.getName() + "(" + parentName + ")");
+            if (!"".equals(parentName)) {
+                labResp.setDeptName(deptDO.getName() + "(" + parentName + ")");
+            }
         });
         return R.ok(labRespPageResp);
     }
@@ -101,7 +109,21 @@ public class LabController extends BaseController<LabService, LabResp, LabDetail
     @GetMapping("/loginUser")
     public R<List<LabDO>> selectLabByLoginUser() {
         LoginUser loginUser = LoginHelper.getLoginUser();
-        return R.ok(labService.selectLabByUserId(loginUser.getId()));
+        // 如果是管理员则查询所有
+        Set<RoleDTO> roles = loginUser.getRoles();
+        boolean isAdmin = roles.stream().anyMatch(r -> r.getId() == 1);
+        if (isAdmin) {
+            List<LabDO> labels = labService.myList();
+            labels.forEach(labDO -> {
+                labDO.setDeptName(deptService.getById(labDO.getDeptId()).getName());
+            });
+            return R.ok(labels);
+        }
+        List<LabDO> labDOS = labService.selectLabByUserId(loginUser.getId());
+        labDOS.forEach(labDO -> {
+            labDO.setDeptName(deptService.getById(labDO.getDeptId()).getName());
+        });
+        return R.ok(labDOS);
 //        PageResp<LabResp> labRespPageResp = labService.myPage(labQuery, pageQuery);
 //        labRespPageResp.getList().forEach(labResp -> {
 //            labResp.setUserName(userService.getById(labResp.getUserId()).getUsername());
@@ -115,4 +137,35 @@ public class LabController extends BaseController<LabService, LabResp, LabDetail
 //        });
         //return R.ok(labRespPageResp);
     }
+
+    /**
+     * 查询学院列表
+     */
+    @Operation(summary = "根查询学院列表", description = "查询学院列表")
+    @ResponseBody
+    @GetMapping("/dept/{deptName}")
+    public R<List<DeptDO>> selectDept(@PathVariable String deptName) {
+        // todo 优化
+        QueryWrapper<DeptDO> queryWrapper = new QueryWrapper<>();
+        // 为1表示校区
+        //queryWrapper.eq("parent_id", 1);
+        queryWrapper.like("name",deptName);
+        List<DeptDO> deptDOS = deptService.list(queryWrapper);
+        // 根据父id 查询父name
+        for (DeptDO deptDO : deptDOS) {
+            Long pId = deptDO.getParentId();
+            if (pId != 0){
+                DeptDO parent = deptService.getById(pId);
+                deptDO.setName(deptDO.getName() + "(" + parent.getName() + ")");
+            }
+        }
+//        List<DeptDO> childDept = new ArrayList<>();
+//        for (DeptDO dept : deptDOS) {
+//            QueryWrapper<DeptDO> childQueryWrapper = new QueryWrapper<>();
+//            childQueryWrapper.eq("parent_id", dept.getId());
+//            childDept.addAll(deptService.list(childQueryWrapper));
+//        }
+        return R.ok(deptDOS);
+    }
+
 }

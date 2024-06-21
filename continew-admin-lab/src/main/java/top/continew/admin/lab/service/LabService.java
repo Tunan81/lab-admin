@@ -25,4 +25,6 @@ public interface LabService extends BaseService<LabResp, LabDetailResp, LabQuery
     List<LabDO> selectLabByName(String labName);
 
     List<LabDO> selectLabByUserId(Long id);
+
+    List<LabDO> myList();
 }

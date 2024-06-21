@@ -48,6 +48,9 @@ public class LabDO extends BaseDO {
     private Long deptId;
 
     @TableField(exist = false)
+    private String deptName;
+
+    @TableField(exist = false)
     private DeptDO deptDO;
 
     @TableField(exist = false)

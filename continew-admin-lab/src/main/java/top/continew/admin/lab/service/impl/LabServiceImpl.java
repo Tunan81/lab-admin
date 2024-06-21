@@ -57,4 +57,10 @@ public class LabServiceImpl extends BaseServiceImpl<LabMapper, LabDO, LabResp, L
         query.eq("user_id",id);
         return baseMapper.selectList(query);
     }
+
+    @Override
+    public List<LabDO> myList() {
+        QueryWrapper<LabDO> queryWrapper = new QueryWrapper<>();
+        return baseMapper.selectList(queryWrapper);
+    }
 }
